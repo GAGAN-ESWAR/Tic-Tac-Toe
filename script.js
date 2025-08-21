@@ -96,6 +96,7 @@ function gameController(
     ];
 
     let activePlayer = players[0];
+    let winner = null;
 
     const switchPlayer = ()=>{
         activePlayer = activePlayer === players[0]?players[1]:players[0];
@@ -108,18 +109,45 @@ function gameController(
         console.log(`${getActivePlayer().name}'s turn`);
     };
 
+    const checkWinner = () => {
+        const b = board.getBoard().map(row => row.map(cell => cell.getValue()));
+
+        // rows
+        for (let i = 0; i < 3; i++) {
+            if (b[i][0] !== " " && b[i][0] === b[i][1] && b[i][1] === b[i][2]) return b[i][0];
+        }
+        // cols
+        for (let j = 0; j < 3; j++) {
+            if (b[0][j] !== " " && b[0][j] === b[1][j] && b[1][j] === b[2][j]) return b[0][j];
+        }
+        // diagonals
+        if (b[0][0] !== " " && b[0][0] === b[1][1] && b[1][1] === b[2][2]) return b[0][0];
+        if (b[0][2] !== " " && b[0][2] === b[1][1] && b[1][1] === b[2][0]) return b[0][2];
+
+        // draw check
+        if (b.every(row => row.every(cell => cell !== " "))) return "draw";
+
+        return null;
+    };
+
     const playRound =(row,column)=>{
+        if(winner) return;
+
         board.changevalue(row,column,getActivePlayer().value)
 
-        // Switch player turn
-        switchPlayer();
-        printNewRound();
+         // check if move ended the game
+        winner = checkWinner();
+        if (!winner) switchPlayer();
+
+        // printNewRound();
     };
 
     return {
         playRound,
         getActivePlayer,
-        getBoard : board.getBoard
+        getBoard : board.getBoard,
+        getWinner: () => winner,
+        isOver: () => winner !== null
     };
 }
 
@@ -136,8 +164,17 @@ function screenController() {
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
-        // Display player's turn
-        playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+        if (game.isOver()) {
+            const winner = game.getWinner();
+            if (winner === "draw") {
+                playerTurnDiv.textContent = "It's a draw! 🤝";
+            } else {
+                playerTurnDiv.textContent = `${winner === "x" ? "Player One" : "Player Two"} wins! 🎉`;
+            }
+        } 
+        else {
+            playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
+        }
 
         // Render board squares
         board.forEach((row,indexRow) => {
