@@ -1,22 +1,120 @@
-.board {
-  display: grid;
-  height: 500px;
-  width: 500px;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  border: 1px solid black;
-  gap: 2px;
-  padding: 2px;
-  background-color: yellow;
+/* Reset some defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Shared screen styles */
+#intro-screen,
+#game-screen,
+#winner-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+}
+
+/* Headings */
+h1, h2 {
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+/* Inputs */
+input {
+  margin: 0.5rem 0;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 80%;
+  max-width: 300px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  border-color: #0077ff;
+}
+
+/* Buttons */
+button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #027e1d;
+  color: rgb(255, 255, 255);
+}
+
+button:hover {
+  background: #005fcc;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Game board */
+.board {
+  display: grid;
+  margin: 1.5rem auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  width: 320px;
+  aspect-ratio: 1/1;
+  background: #e0e0e0;
+  border-radius: 12px;
+  padding: 5px;
+}
+
+/* Game cells */
 .cell {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   font-size: 2rem;
-  border: 1px solid grey;
-  background: lightyellow;
+  font-weight: bold;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #222;
+  border: 2px solid #ddd;
   cursor: pointer;
+}
+
+.cell:hover {
+  background: #f0f8ff;
+  transform: scale(1.05);
+}
+
+.cell:active {
+  transform: scale(1);
+}
+
+/* Winner message */
+#winner-message {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #222;
 }
