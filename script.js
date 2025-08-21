@@ -96,7 +96,6 @@ function gameController(
     ];
 
     let activePlayer = players[0];
-    let gameOver= false;
 
     const switchPlayer = ()=>{
         activePlayer = activePlayer === players[0]?players[1]:players[0];
@@ -109,55 +108,8 @@ function gameController(
         console.log(`${getActivePlayer().name}'s turn`);
     };
 
-     const checkWinner = () => {
-        const b = board.getBoard().map(row => row.map(cell => cell.getValue()));
-
-        // Rows
-        for (let i = 0; i < 3; i++) {
-            if (b[i][0] !== " " && b[i][0] === b[i][1] && b[i][1] === b[i][2]) {
-                return true;
-            }
-        }
-
-        // Columns
-        for (let j = 0; j < 3; j++) {
-            if (b[0][j] !== " " && b[0][j] === b[1][j] && b[1][j] === b[2][j]) {
-                return true;
-            }
-        }
-
-        // Diagonals
-        if (b[0][0] !== " " && b[0][0] === b[1][1] && b[1][1] === b[2][2]) {
-            return true;
-        }
-        if (b[0][2] !== " " && b[0][2] === b[1][1] && b[1][1] === b[2][0]) {
-            return true;
-        }
-
-        return false;
-    };
-
-    const checkDraw = () => {
-        const b = board.getBoard().map(row => row.map(cell => cell.getValue()));
-        return b.every(row => row.every(cell => cell !== " "));
-    };
-
     const playRound =(row,column)=>{
-        if (gameOver) return;
-
         board.changevalue(row,column,getActivePlayer().value)
-
-         if (checkWinner()) {
-            console.log(`${getActivePlayer().name} wins!`);
-            gameOver = true;
-            return;
-        }
-
-        if (checkDraw()) {
-            console.log("It's a draw!");
-            gameOver = true;
-            return;
-        }
 
         // Switch player turn
         switchPlayer();
