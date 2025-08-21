@@ -152,9 +152,40 @@ function gameController(
 }
 
 function screenController() {
-    const game = gameController();
+    let game;
+    let p1= "";
+    let p2= "";
+
+    // DOM Elements
     const playerTurnDiv = document.querySelector(".turn");
     const boardDiv = document.querySelector(".board");
+    const introScreen = document.querySelector("#intro-screen");
+    const gameScreen = document.querySelector("#game-screen");
+    const winnerScreen = document.querySelector("#winner-screen");
+    const winnerMessage = document.querySelector("#winner-message");
+    const startBtn = document.querySelector("#start-btn");
+    const playAgainBtn = document.querySelector("#play-again-btn");
+
+    startBtn.addEventListener("click",() => {
+        p1 = document.querySelector("#player1-name").value || "Player One";
+        p2 = document.querySelector("#player2-name").value || "Player Two";
+
+        game = gameController(p1, p2);
+
+        introScreen.style.display = "none";
+        gameScreen.style.display = "block";
+        winnerScreen.style.display = "none";
+
+        updateScreen();
+    })
+
+    // Play Again -> reset game with same names
+    playAgainBtn.addEventListener("click", () => {
+        game = gameController(p1, p2);
+        winnerScreen.style.display = "none";
+        gameScreen.style.display = "block";
+        updateScreen();
+    });
 
     const updateScreen = ()=>{
         // clear the board
@@ -166,15 +197,18 @@ function screenController() {
 
         if (game.isOver()) {
             const winner = game.getWinner();
+
+            gameScreen.style.display = "none";
+            winnerScreen.style.display = "block";
+
             if (winner === "draw") {
-                playerTurnDiv.textContent = "It's a draw! 🤝";
+                winnerMessage.textContent = "It's a draw! 🤝";
             } else {
-                playerTurnDiv.textContent = `${winner === "x" ? "Player One" : "Player Two"} wins! 🎉`;
+                winnerMessage.textContent = `${winner === "x" ? p1 : p2} wins! 🎉`;
             }
         } 
-        else {
-            playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
-        }
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
 
         // Render board squares
         board.forEach((row,indexRow) => {
@@ -207,7 +241,7 @@ function screenController() {
     boardDiv.addEventListener("click",clickHandlerBoard);
 
     // Initial render
-    updateScreen();
+    // updateScreen();
 
     // We don't need to return anything from this module because everything is encapsulated inside this screen controller.
 }

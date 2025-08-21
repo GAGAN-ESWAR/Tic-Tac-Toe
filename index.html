@@ -7,10 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1 class="container">
+    <!-- Intro Screen -->
+    <div id="intro-screen">
+        <h2>Welcome to Tic Tac Toe!</h2>
+        <input type="text" id="player1-name" placeholder="Player One name">
+        <input type="text" id="player2-name" placeholder="Player Two name">
+        <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" style="display: none;">
         <h1 class="turn"></h1>
         <div class="board"></div>
-   </div>
+    </div>
+
+    <!-- Winner Screen -->
+    <div id="winner-screen" style="display: none;">
+        <h2 id="winner-message"></h2>
+        <button id="play-again-btn">Play Again</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
